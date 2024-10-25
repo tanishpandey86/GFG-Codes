@@ -87,42 +87,49 @@ class Solution {
     void removeLoop(Node* head) {
         // code here
         // just remove the loop without losing any nodes
-        Node* slow=head;
-        Node* fast=head;
-        if(head == nullptr || head->next == nullptr) return;
-        while(fast != nullptr && fast->next != nullptr)
-        {
-            slow=slow->next;
-            fast=fast->next->next;
-            if(slow == fast)
-            {
-                if(fast == head)
-                {
-                    fast=fast->next;
-                    while(fast->next != slow)
-                    {
-                        fast=fast->next;
-                    }
-                    fast->next=nullptr;
-                    return;
-                }
-                else{
-                    slow=head;
-                    while(fast != slow)
-                    {
-                        slow=slow->next;
-                        if(fast->next != slow)
-                            fast=fast->next;
-                        else{
-                            fast->next=NULL;
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-        return ;
         
+        Node *slow = head , *fast = head;
+        
+        while(fast!=NULL&&fast->next!=NULL)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+            
+            if(slow==fast)
+            break;
+        }
+        
+        if(fast==NULL||fast->next==NULL)
+        return;
+        
+        int count = 1;
+        slow = fast->next;
+        
+        while(slow!=fast)
+        {
+            count++;
+            slow = slow->next;
+        }
+        
+        slow = head , fast = head;
+        
+        while(count--)
+        {
+            fast =  fast->next;
+        }
+        
+        while(slow!=fast)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        
+        while(slow->next!=fast)
+        {
+            slow =  slow->next;
+        }
+        
+        slow->next = NULL;
     }
 };
 
