@@ -6,23 +6,20 @@ using namespace std;
 // } Driver Code Ends
 
 class Solution {
-    public:
-    //Function to find the first non-repeating character in a string.
-    char nonrepeatingCharacter(string S)
-    {
-       //Your code here
-       unordered_map<char , int>mp;
-       
-       for(char c : S){
-           mp[c]++;
-       }
-       
-       for(char c : S){
-           if(mp [c] == 1){
-               return c;
-           }
-       }
-       return '$';
+  public:
+    // Function to find the first non-repeating character in a string.
+    char nonRepeatingChar(string &s) {
+        // Your code here
+        vector<int> f(26,0);
+        for(auto c : s){
+            f[c-'a']++;
+        }
+        for(auto c : s){
+            if(f[c-'a']==1){
+                return c;
+            }
+        }
+        return '$';
     }
 };
 
@@ -38,7 +35,7 @@ int main() {
         string S;
         cin >> S;
         Solution obj;
-        char ans = obj.nonrepeatingCharacter(S);
+        char ans = obj.nonRepeatingChar(S);
 
         if (ans != '$')
             cout << ans;
@@ -46,6 +43,9 @@ int main() {
             cout << "-1";
 
         cout << endl;
+
+        cout << "~"
+             << "\n";
     }
 
     return 0;
