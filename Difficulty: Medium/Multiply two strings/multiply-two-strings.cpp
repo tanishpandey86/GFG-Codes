@@ -1,7 +1,7 @@
 //{ Driver Code Starts
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
- 
+
 
 // } Driver Code Ends
 class Solution{
@@ -54,19 +54,20 @@ class Solution{
 };
 
 //{ Driver Code Starts.
- 
+
 int main() {
-     
+
     int t;
-    cin>>t;
-    while(t--)
-    {
-    	string a;
-    	string b;
-    	cin>>a>>b;
-    	Solution obj;
-    	cout<<obj.multiplyStrings(a,b)<<endl;
+    cin >> t;
+    while (t--) {
+        string a;
+        string b;
+        cin >> a >> b;
+        Solution obj;
+        cout << obj.multiplyStrings(a, b) << endl;
+
+        cout << "~"
+             << "\n";
     }
-     
 }
 // } Driver Code Ends
