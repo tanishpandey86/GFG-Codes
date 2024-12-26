@@ -8,21 +8,22 @@ using namespace std;
 class Solution {
   public:
     bool twoSum(vector<int>& arr, int target) {
-        // code here
-        sort(arr.begin(),arr.end());
-        int n=arr.size();
-        int start=0,end=n-1;
-        while(start<end)
-        {
-            if(arr[start]+arr[end]==target)
-                return true;
-            else if(arr[start]+arr[end]>target)
-                end--;
-            else
-                start++;
+        unordered_map<int,int> mp;
+        int n = arr.size();
+        
+        for(int i=0; i<n; i++){
+            if(arr[i] <= target){
+                 if(mp[arr[i]] == 1){
+                    return true;
+                }else{
+                    mp[target-arr[i]] = 1;
+                }
+            }
         }
+        
         return false;
     }
+    
 };
 
 //{ Driver Code Starts.
@@ -30,11 +31,11 @@ class Solution {
 int main() {
     int t;
     cin >> t;
-    cin.ignore(); // To discard any leftover newline characters
+    cin.ignore();
     while (t--) {
         int x;
         cin >> x;
-        cin.ignore(); // To discard any leftover newline characters
+        cin.ignore();
 
         vector<int> arr;
         string input;
@@ -48,6 +49,7 @@ int main() {
         Solution ob;
         auto ans = ob.twoSum(arr, x);
         cout << (ans ? "true" : "false") << endl;
+        cout << "~" << endl;
     }
 
     return 0;
