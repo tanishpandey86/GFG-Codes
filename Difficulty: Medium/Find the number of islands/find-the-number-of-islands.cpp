@@ -2,49 +2,61 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 // } Driver Code Ends
+
 class Solution {
-    
   public:
-    int drow[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
-    int dcol[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
-    // Function to check if the cell is valid for DFS
-    bool isValid(vector<vector<char>>& grid, int row, int col, int n, int m) {
-        return row >= 0 && row < n && col >= 0 && col < m && grid[row][col] == '1';
-    }
-
-    // DFS function to mark all connected lands
-    void dfs(vector<vector<char>>& grid, int row, int col, int n, int m) {
-        grid[row][col] = '0';
-
-        // Visit all 8 possible directions
-        for (int i = 0; i < 8; i++) {
-            int newr = row + drow[i];
-            int newc = col + dcol[i];
-
-            if (isValid(grid, newr, newc, n, m)) {
-                dfs(grid, newr, newc, n, m);
+    int n,m;
+    vector<vector<int>>directions={{-1,0},{0,1},{1,0},{0,-1},{-1,-1},{1,1},{-1,1},{1,-1}};
+    void dfs(int row,int col,vector<vector<char>>& grid,vector<vector<bool>>&visited){
+        visited[row][col]=true;
+        for(auto&dir:directions){
+            int new_row=row+dir[0];
+            int new_col=col+dir[1];
+            if(new_row>=0&&new_row<n&&new_col>=0&&new_col<m&&grid[new_row][new_col]=='L'&&!visited[new_row][new_col]){
+                dfs(new_row,new_col,grid,visited);
             }
         }
+        return;
     }
-
-    // Function to find the number of islands.
-    int numIslands(vector<vector<char>>& grid) {
-        int count = 0;
-        int n = grid.size();
-        int m = grid[0].size();
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (grid[i][j] == '1') {  // Found an unvisited land
-                    dfs(grid, i, j, n, m);  // Perform DFS to mark the whole island
-                    count++;
+    void bfs(int r,int c,vector<vector<char>>& grid,vector<vector<bool>>&visited){
+        queue<pair<int,int>>q;
+        q.push({r,c});
+        visited[r][c]=true;
+        while(!q.empty()){
+            int row=q.front().first;
+            int col=q.front().second;
+            q.pop();
+            for(auto&dir:directions){
+            int new_row=dir[0]+row;
+            int new_col=dir[1]+col;
+            if(new_row>=0&&new_row<n&&new_col>=0&&new_col<m&&grid[new_row][new_col]=='L'&&!visited[new_row][new_col]){
+                q.push({new_row,new_col});
+                visited[new_row][new_col]=true;
+            }
+          }
+        }
+        return;
+    }
+    int countIslands(vector<vector<char>>& grid) {
+        n=grid.size();
+        m=grid[0].size();
+        int cnt=0;
+        vector<vector<bool>>visited(n,vector<bool>(m,0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(!visited[i][j]&&grid[i][j]=='L'){
+                    // dfs(i,j,grid,visited);
+                    bfs(i,j,grid,visited);
+                    cnt++;
                 }
             }
         }
-        return count;
+      return cnt;
     }
 };
+
 
 //{ Driver Code Starts.
 int main() {
@@ -60,8 +72,11 @@ int main() {
             }
         }
         Solution obj;
-        int ans = obj.numIslands(grid);
+        int ans = obj.countIslands(grid);
         cout << ans << '\n';
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
