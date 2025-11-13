@@ -1,52 +1,35 @@
-//{ Driver Code Starts
-// Initial template for C++
-
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-// User function template for C++
-
 class Solution {
   public:
-    /*You are required to complete this method */
-    bool isInterleave(string A, string B, string C) 
-{
-    int n=A.length(),m=B.length();
-    int dp[n+1][m+1];
-    memset(dp,0,sizeof(dp));
-    dp[0][0]=1;
+  
+    bool solve(int i, int j, string& s1, string& s2, string& s3, vector<vector<int>>& dp) {
         
-    for(int i=0;i<=n;i++){
-        for(int j=0;j<=m;j++){
-            if(i>0 && A[i-1]==C[i+j-1])dp[i][j]|=dp[i-1][j];
-            if(j>0 && B[j-1]==C[i+j-1])dp[i][j]|=dp[i][j-1];
+        if (i == s1.length() && j == s2.length() && i + j == s3.length()) {
+            return true;
         }
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+        int k = i + j;
+        
+        bool ans1 = false;
+        
+        if (i < s1.length() && s1[i] == s3[k]) {
+            ans1 = solve(i+1, j, s1, s2, s3, dp);
+        }
+        bool ans2 = false;
+        if (j < s2.length() && s2[j] == s3[k]) {
+            ans2 = solve(i, j+1, s1, s2, s3, dp);
+        }
+        
+        return dp[i][j] = ans1 || ans2;
     }
-    return dp[n][m];
-}
+    bool isInterleave(string &s1, string &s2, string &s3) {
+        // code here
+        int n = s1.length();
+        int m = s2.length();
+        
+        vector<vector<int>> dp(n+1, vector<int>(m+1, -1));
+        
+        return solve(0, 0, s1, s2, s3, dp);
+    }
 };
-
-//{ Driver Code Starts.
-int main() {
-    int t;
-    cin >> t;
-    while (t--) {
-        string a, b, c;
-        cin >> a;
-        cin >> b;
-        cin >> c;
-        Solution obj;
-        if (obj.isInterleave(a, b, c))
-            cout << "true" << endl;
-        else
-            cout << "false" << endl;
-
-        cout << "~"
-             << "\n";
-    }
-    // your code goes here
-    return 0;
-}
-// } Driver Code Ends
